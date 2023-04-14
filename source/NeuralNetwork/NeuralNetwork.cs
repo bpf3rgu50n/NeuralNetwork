@@ -53,7 +53,7 @@ namespace NeuralNetwork.Core
         public double[] GetOutputs()
         {
             double[] outputs = new double[Outputs.Count];
-            for (var i = 0; i < Outputs.Count; i++)
+            for (int i = 0; i < Outputs.Count; i++)
             {
                 outputs[i] = Outputs[i].Axon.Value;
             }

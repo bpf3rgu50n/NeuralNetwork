@@ -4,9 +4,12 @@ public class RandomWeightInitializer : IWeightInitializer
 {
     private readonly Random _random;
 
+    public RandomWeightInitializer() : this(new Random())
+    { }
+
     public RandomWeightInitializer(Random random)
     {
-        _random = new Random();
+        _random = random;
     }
 
     public double InitializeWeight()

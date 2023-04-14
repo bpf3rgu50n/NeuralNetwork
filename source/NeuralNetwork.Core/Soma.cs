@@ -5,8 +5,11 @@ namespace NeuralNetwork.Core;
 public class Soma : ISoma
 {
     public IList<Synapse> Dendrites { get; set; }
+
     public ISummationFunction SummationFunction { get; set; }
+
     public double Bias { get; set; }
+
     public double Value { get; protected set; }
 
     public Soma(IList<Synapse> dendrites, ISummationFunction summationFunction, double bias)
@@ -28,10 +31,8 @@ public class Soma : ISoma
 
     public SomaGene GetGenes()
     {
-        return new SomaGene
-        {
-            Bias = Bias,
-            SummationFunction = SummationFunction.GetType()
-        };
+        Type summationFunction = SummationFunction.GetType();
+
+        return new SomaGene(Bias, summationFunction);
     }
 }

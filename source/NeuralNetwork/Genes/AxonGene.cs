@@ -68,7 +68,7 @@ namespace NeuralNetwork.Core.Genes
                 return true;
             }
             // If one or the other is null, return false.
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            if (a is null || b is null)
             {
                 return false;
             }
@@ -89,7 +89,7 @@ namespace NeuralNetwork.Core.Genes
         {
             unchecked // Overflow is fine, just wrap
             {
-                var hash = (int)2166136261;
+                int hash = (int)2166136261;
                 hash = hash * 16777619 ^ Weights.GetHashCode();
                 return hash;
             }

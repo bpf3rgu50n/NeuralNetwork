@@ -6,9 +6,13 @@ namespace NeuralNetwork.Core;
 public class NeuralNetwork : INeuralNetwork
 {
     public ILayer InputLayer { get; set; }
+
     public IList<ILayer> HiddenLayers { get; set; }
+
     public ILayer OutputLayer { get; set; }
+
     public IList<Synapse> Inputs { get; set; }
+
     public IList<Synapse> Outputs { get; set; }
 
     public NeuralNetwork(IList<Synapse> inputs, ILayer inputLayer, IList<ILayer> hiddenLayers, ILayer outputLayer, IList<Synapse> outputs)
@@ -33,7 +37,7 @@ public class NeuralNetwork : INeuralNetwork
         }
         for (int i = 0; i < Inputs.Count; i++)
         {
-            Inputs[i].Axon.ProcessSignal(inputs[i]);
+            Inputs[i].Axon?.ProcessSignal(inputs[i]);
         }
     }
 
@@ -50,7 +54,7 @@ public class NeuralNetwork : INeuralNetwork
     public double[] GetOutputs()
     {
         double[] outputs = new double[Outputs.Count];
-        for (var i = 0; i < Outputs.Count; i++)
+        for (int i = 0; i < Outputs.Count; i++)
         {
             outputs[i] = Outputs[i].Axon.Value;
         }
@@ -59,12 +63,11 @@ public class NeuralNetwork : INeuralNetwork
 
     public NeuralNetworkGene GetGenes()
     {
-        return new NeuralNetworkGene
-        {
-            InputGene = InputLayer.GetGenes(),
-            HiddenGenes = HiddenLayers.Select(l => l.GetGenes()).ToList(),
-            OutputGene = OutputLayer.GetGenes()
-        };
+        LayerGene inputGene = InputLayer.GetGenes();
+        List<LayerGene> hiddenGenes = HiddenLayers.Select(l => l.GetGenes()).ToList();
+        LayerGene outputGene = OutputLayer.GetGenes();
+
+        return new NeuralNetworkGene(hiddenGenes, inputGene, outputGene);
     }
 
     ///**

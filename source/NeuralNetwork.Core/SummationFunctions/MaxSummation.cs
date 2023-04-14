@@ -7,7 +7,7 @@ public class MaxSummation : ISummationFunction
         double max = bias;
         foreach (Synapse synapse in dendrites)
         {
-            var weightedValue = synapse.Axon.Value * synapse.Weight;
+            double weightedValue = synapse.Axon.Value * synapse.Weight;
             if (weightedValue > max)
             {
                 max = weightedValue;

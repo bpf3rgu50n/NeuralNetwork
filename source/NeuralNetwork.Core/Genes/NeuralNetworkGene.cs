@@ -2,50 +2,22 @@
 
 public class NeuralNetworkGene : IEquatable<NeuralNetworkGene>
 {
-    public LayerGene InputGene;
     public IList<LayerGene> HiddenGenes;
+    public LayerGene InputGene;
     public LayerGene OutputGene;
+
+    public NeuralNetworkGene(IList<LayerGene> hiddenGenes, LayerGene inputGene, LayerGene outputGene)
+    {
+        HiddenGenes = hiddenGenes;
+        InputGene = inputGene;
+        OutputGene = outputGene;
+    }
 
     #region Equality Members
 
-    /// <summary>
-    /// Returns true if the fields of the NeuralNetworkGene objects are the same.
-    /// </summary>
-    /// <param name="obj">The NeuralNetworkGene object to compare with.</param>
-    /// <returns>
-    /// True if the fields of the NeuralNetworkGene objects are the same; false otherwise.
-    /// </returns>
-    public override bool Equals(object obj)
+    public static bool operator !=(NeuralNetworkGene a, NeuralNetworkGene b)
     {
-        if (obj == null || GetType() != obj.GetType())
-        {
-            return false;
-        }
-
-        return Equals(obj as NeuralNetworkGene);
-    }
-
-    /// <summary>
-    /// Returns true if the fields of the NeuralNetworkGene objects are the same.
-    /// </summary>
-    /// <param name="neuralNetworkGene">The NeuralNetworkGene object to compare with.</param>
-    /// <returns>
-    /// True if the fields of the NeuralNetworkGene objects are the same; false otherwise.
-    /// </returns>
-    public bool Equals(NeuralNetworkGene neuralNetworkGene)
-    {
-        if (neuralNetworkGene == null)
-        {
-            return false;
-        }
-
-        if (neuralNetworkGene.InputGene != InputGene || neuralNetworkGene.OutputGene != OutputGene ||
-            neuralNetworkGene.HiddenGenes.Count != HiddenGenes.Count)
-        {
-            return false;
-        }
-
-        return !HiddenGenes.Where((t, i) => t != neuralNetworkGene.HiddenGenes[i]).Any();
+        return !(a == b);
     }
 
     /// <summary>
@@ -64,17 +36,55 @@ public class NeuralNetworkGene : IEquatable<NeuralNetworkGene>
         {
             return true;
         }
+
         // If one or the other is null, return false.
-        if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+        if (a is null || b is null)
         {
             return false;
         }
+
         return a.Equals(b);
     }
 
-    public static bool operator !=(NeuralNetworkGene a, NeuralNetworkGene b)
+    /// <summary>
+    /// Returns true if the fields of the NeuralNetworkGene objects are the same.
+    /// </summary>
+    /// <param name="obj">The NeuralNetworkGene object to compare with.</param>
+    /// <returns>
+    /// True if the fields of the NeuralNetworkGene objects are the same; false otherwise.
+    /// </returns>
+    public override bool Equals(object? obj)
     {
-        return !(a == b);
+        if (obj is null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        return Equals(obj as NeuralNetworkGene);
+    }
+
+    /// <summary>
+    /// Returns true if the fields of the NeuralNetworkGene objects are the same.
+    /// </summary>
+    /// <param name="neuralNetworkGene">The NeuralNetworkGene object to compare with.</param>
+    /// <returns>
+    /// True if the fields of the NeuralNetworkGene objects are the same; false otherwise.
+    /// </returns>
+    public bool Equals(NeuralNetworkGene? neuralNetworkGene)
+    {
+        if (neuralNetworkGene is null)
+        {
+            return false;
+        }
+
+        if (neuralNetworkGene.InputGene != InputGene ||
+            neuralNetworkGene.OutputGene != OutputGene ||
+            neuralNetworkGene.HiddenGenes.Count != HiddenGenes.Count)
+        {
+            return false;
+        }
+
+        return !HiddenGenes.Where((t, i) => t != neuralNetworkGene.HiddenGenes[i]).Any();
     }
 
     // Following this algorithm: http://stackoverflow.com/a/263416
@@ -86,7 +96,7 @@ public class NeuralNetworkGene : IEquatable<NeuralNetworkGene>
     {
         unchecked // Overflow is fine, just wrap
         {
-            var hash = (int)2166136261;
+            int hash = (int)2166136261;
             hash = hash * 16777619 ^ InputGene.GetHashCode() ^ HiddenGenes.GetHashCode() ^ OutputGene.GetHashCode();
             return hash;
         }

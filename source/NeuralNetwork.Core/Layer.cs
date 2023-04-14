@@ -27,9 +27,8 @@ public class Layer : ILayer
 
     public LayerGene GetGenes()
     {
-        return new LayerGene
-        {
-            Neurons = NeuronsInLayer.Select(n => n.GetGenes()).ToList()
-        };
+        IList<NeuronGene> neurons = NeuronsInLayer.Select(n => n.GetGenes()).ToList();
+
+        return new LayerGene(neurons);
     }
 }
