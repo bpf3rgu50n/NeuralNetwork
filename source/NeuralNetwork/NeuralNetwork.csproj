@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{31E24D6E-AFCF-4522-AEBA-CCCCD817BB85}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ArtificialNeuralNetwork</RootNamespace>
+    <AssemblyName>NeuralNetwork</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivationFunctions\AbsoluteXActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\IActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\IdentityActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\InverseActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\LeakyRectifiedLinearActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\RectifiedLinearActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\SechActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\SigmoidActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\SinhActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\StepActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\TanhActivationFunction.cs" />
+    <Compile Include="Axon.cs" />
+    <Compile Include="Factories\INeuronFactory.cs" />
+    <Compile Include="Factories\NeuronFactory.cs" />
+    <Compile Include="WeightInitializer\ConstantWeightInitializer.cs" />
+    <Compile Include="Factories\AxonFactory.cs" />
+    <Compile Include="Factories\IAxonFactory.cs" />
+    <Compile Include="Factories\INeuralNetworkFactory.cs" />
+    <Compile Include="Factories\ISomaFactory.cs" />
+    <Compile Include="Factories\ISynapseFactory.cs" />
+    <Compile Include="Factories\NeuralNetworkFactory.cs" />
+    <Compile Include="Factories\SomaFactory.cs" />
+    <Compile Include="Factories\SynapseFactory.cs" />
+    <Compile Include="Genes\AxonGene.cs" />
+    <Compile Include="Genes\LayerGene.cs" />
+    <Compile Include="Genes\NeuralNetworkGene.cs" />
+    <Compile Include="Genes\NeuronGene.cs" />
+    <Compile Include="Genes\SomaGene.cs" />
+    <Compile Include="IAxon.cs" />
+    <Compile Include="ILayer.cs" />
+    <Compile Include="INeuralNetwork.cs" />
+    <Compile Include="INeuron.cs" />
+    <Compile Include="ISoma.cs" />
+    <Compile Include="WeightInitializer\IWeightInitializer.cs" />
+    <Compile Include="WeightInitializer\RandomWeightInitializer.cs" />
+    <Compile Include="Soma.cs" />
+    <Compile Include="SummationFunctions\AverageSummation.cs" />
+    <Compile Include="SummationFunctions\ISummationFunction.cs" />
+    <Compile Include="SummationFunctions\MaxSummation.cs" />
+    <Compile Include="SummationFunctions\MinSummation.cs" />
+    <Compile Include="Synapse.cs" />
+    <Compile Include="Layer.cs" />
+    <Compile Include="NeuralNetwork.cs" />
+    <Compile Include="Neuron.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SummationFunctions\SimpleSummation.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
