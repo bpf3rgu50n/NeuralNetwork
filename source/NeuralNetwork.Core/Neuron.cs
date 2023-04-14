@@ -6,6 +6,7 @@ namespace NeuralNetwork.Core;
 public class Neuron : INeuron
 {
     public ISoma Soma { get; set; }
+
     public IAxon Axon { get; set; }
 
     public Neuron(ISoma soma, IAxon axon)
@@ -26,10 +27,9 @@ public class Neuron : INeuron
 
     public NeuronGene GetGenes()
     {
-        return new NeuronGene
-        {
-            Soma = Soma.GetGenes(),
-            Axon = Axon.GetGenes()
-        };
+        SomaGene soma = Soma.GetGenes();
+        AxonGene axon = Axon.GetGenes();
+
+        return new NeuronGene(soma, axon);
     }
 }

@@ -4,7 +4,7 @@ namespace NeuralNetwork.Core.Factories;
 
 public class SomaFactory : ISomaFactory
 {
-    private ISummationFunction _summationFunction;
+    private readonly ISummationFunction _summationFunction;
 
     private SomaFactory(ISummationFunction summationFunction)
     {

@@ -4,10 +4,40 @@ namespace NeuralNetwork.Core.Genes
 {
     public class NeuronGene : IEquatable<NeuronGene>
     {
-        public SomaGene Soma;
         public AxonGene Axon;
+        public SomaGene Soma;
 
         #region Equality Members
+
+        public static bool operator !=(NeuronGene a, NeuronGene b)
+        {
+            return !(a == b);
+        }
+
+        /// <summary>
+        /// Returns true if the fields of the NeuronGene objects are the same.
+        /// </summary>
+        /// <param name="a">The NeuronGene object to compare.</param>
+        /// <param name="b">The NeuronGene object to compare.</param>
+        /// <returns>
+        /// True if the objects are the same, are both null, or have the same values;
+        /// false otherwise.
+        /// </returns>
+        public static bool operator ==(NeuronGene a, NeuronGene b)
+        {
+            // If both are null, or both are same instance, return true.
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            // If one or the other is null, return false.
+            if (a is null || b is null)
+            {
+                return false;
+            }
+            return a.Equals(b);
+        }
 
         /// <summary>
         /// Returns true if the fields of the NeuronGene objects are the same.
@@ -48,35 +78,6 @@ namespace NeuralNetwork.Core.Genes
             return true;
         }
 
-        /// <summary>
-        /// Returns true if the fields of the NeuronGene objects are the same.
-        /// </summary>
-        /// <param name="a">The NeuronGene object to compare.</param>
-        /// <param name="b">The NeuronGene object to compare.</param>
-        /// <returns>
-        /// True if the objects are the same, are both null, or have the same values;
-        /// false otherwise.
-        /// </returns>
-        public static bool operator ==(NeuronGene a, NeuronGene b)
-        {
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(a, b))
-            {
-                return true;
-            }
-            // If one or the other is null, return false.
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
-            {
-                return false;
-            }
-            return a.Equals(b);
-        }
-
-        public static bool operator !=(NeuronGene a, NeuronGene b)
-        {
-            return !(a == b);
-        }
-
         // Following this algorithm: http://stackoverflow.com/a/263416
         /// <summary>
         /// Returns the hash code of the NeuronGene.
@@ -86,7 +87,7 @@ namespace NeuralNetwork.Core.Genes
         {
             unchecked // Overflow is fine, just wrap
             {
-                var hash = (int)2166136261;
+                int hash = (int)2166136261;
                 hash = hash * 16777619 ^ Axon.GetHashCode() ^ Soma.GetHashCode();
                 return hash;
             }

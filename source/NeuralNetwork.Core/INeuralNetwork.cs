@@ -4,17 +4,21 @@ namespace NeuralNetwork.Core;
 
 public interface INeuralNetwork
 {
-    ILayer InputLayer { get; set; }
     IList<ILayer> HiddenLayers { get; set; }
-    ILayer OutputLayer { get; set; }
+
+    ILayer InputLayer { get; set; }
+
     IList<Synapse> Inputs { get; set; }
+
+    ILayer OutputLayer { get; set; }
+
     IList<Synapse> Outputs { get; set; }
+
+    NeuralNetworkGene GetGenes();
 
     double[] GetOutputs();
 
     void Process();
 
     void SetInputs(double[] inputs);
-
-    NeuralNetworkGene GetGenes();
 }

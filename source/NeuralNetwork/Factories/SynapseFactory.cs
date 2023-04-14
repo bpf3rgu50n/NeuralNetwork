@@ -4,8 +4,8 @@ namespace NeuralNetwork.Core.Factories
 {
     public class SynapseFactory : ISynapseFactory
     {
-        private IWeightInitializer _weightInitializer;
-        private IAxonFactory _axonFactory;
+        private readonly IWeightInitializer _weightInitializer;
+        private readonly IAxonFactory _axonFactory;
 
         private SynapseFactory(IWeightInitializer weightInitializer, IAxonFactory axonFactory)
         {
@@ -20,20 +20,17 @@ namespace NeuralNetwork.Core.Factories
 
         public Synapse Create()
         {
-            return new Synapse
-            {
-                Axon = _axonFactory.Create(),
-                Weight = _weightInitializer.InitializeWeight()
-            };
+            IAxon axon = _axonFactory.Create();
+            double weight = _weightInitializer.InitializeWeight();
+
+            return new Synapse(axon, weight);
         }
 
         public Synapse Create(double weight)
         {
-            return new Synapse
-            {
-                Axon = _axonFactory.Create(),
-                Weight = weight
-            };
+            IAxon axon = _axonFactory.Create();
+
+            return new Synapse(axon, weight);
         }
     }
 }

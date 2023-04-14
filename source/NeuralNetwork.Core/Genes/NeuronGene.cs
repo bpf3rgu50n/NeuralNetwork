@@ -2,48 +2,21 @@
 
 public class NeuronGene : IEquatable<NeuronGene>
 {
-    public SomaGene Soma;
-    public AxonGene Axon;
+    public AxonGene Axon { get; set; }
+
+    public SomaGene Soma { get; set; }
+
+    public NeuronGene(SomaGene soma, AxonGene axon)
+    {
+        Soma = soma;
+        Axon = axon;
+    }
 
     #region Equality Members
 
-    /// <summary>
-    /// Returns true if the fields of the NeuronGene objects are the same.
-    /// </summary>
-    /// <param name="obj">The NeuronGene object to compare with.</param>
-    /// <returns>
-    /// True if the fields of the NeuronGene objects are the same; false otherwise.
-    /// </returns>
-    public override bool Equals(object obj)
+    public static bool operator !=(NeuronGene a, NeuronGene b)
     {
-        if (obj == null || GetType() != obj.GetType())
-        {
-            return false;
-        }
-
-        return Equals(obj as NeuronGene);
-    }
-
-    /// <summary>
-    /// Returns true if the fields of the NeuronGene objects are the same.
-    /// </summary>
-    /// <param name="NeuronGene">The NeuronGene object to compare with.</param>
-    /// <returns>
-    /// True if the fields of the NeuronGene objects are the same; false otherwise.
-    /// </returns>
-    public bool Equals(NeuronGene neuronGene)
-    {
-        if (neuronGene == null)
-        {
-            return false;
-        }
-
-        if (neuronGene.Axon != Axon || neuronGene.Soma != Soma)
-        {
-            return false;
-        }
-
-        return true;
+        return !(a == b);
     }
 
     /// <summary>
@@ -62,17 +35,52 @@ public class NeuronGene : IEquatable<NeuronGene>
         {
             return true;
         }
+
         // If one or the other is null, return false.
-        if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+        if (a is null || b is null)
         {
             return false;
         }
         return a.Equals(b);
     }
 
-    public static bool operator !=(NeuronGene a, NeuronGene b)
+    /// <summary>
+    /// Returns true if the fields of the NeuronGene objects are the same.
+    /// </summary>
+    /// <param name="obj">The NeuronGene object to compare with.</param>
+    /// <returns>
+    /// True if the fields of the NeuronGene objects are the same; false otherwise.
+    /// </returns>
+    public override bool Equals(object? obj)
     {
-        return !(a == b);
+        if (obj is null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        return Equals(obj as NeuronGene);
+    }
+
+    /// <summary>
+    /// Returns true if the fields of the NeuronGene objects are the same.
+    /// </summary>
+    /// <param name="NeuronGene">The NeuronGene object to compare with.</param>
+    /// <returns>
+    /// True if the fields of the NeuronGene objects are the same; false otherwise.
+    /// </returns>
+    public bool Equals(NeuronGene? neuronGene)
+    {
+        if (neuronGene is null)
+        {
+            return false;
+        }
+
+        if (neuronGene.Axon != Axon || neuronGene.Soma != Soma)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     // Following this algorithm: http://stackoverflow.com/a/263416
@@ -84,7 +92,7 @@ public class NeuronGene : IEquatable<NeuronGene>
     {
         unchecked // Overflow is fine, just wrap
         {
-            var hash = (int)2166136261;
+            int hash = (int)2166136261;
             hash = hash * 16777619 ^ Axon.GetHashCode() ^ Soma.GetHashCode();
             return hash;
         }

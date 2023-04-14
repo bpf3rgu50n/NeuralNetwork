@@ -32,36 +32,36 @@ namespace NeuralNetwork.Core.Factories
 
         public static NeuralNetworkFactory GetInstance()
         {
-            var somaFactory = SomaFactory.GetInstance(new SimpleSummation());
-            var axonFactory = AxonFactory.GetInstance(new TanhActivationFunction());
-            var random = new Random();
-            var randomInit = new RandomWeightInitializer(random);
-            var synapseFactory = SynapseFactory.GetInstance(randomInit, axonFactory);
-            var ioSynapseFactory = SynapseFactory.GetInstance(new ConstantWeightInitializer(1.0), AxonFactory.GetInstance(new IdentityActivationFunction()));
-            var neuronFactory = NeuronFactory.GetInstance();
+            ISomaFactory somaFactory = SomaFactory.GetInstance(new SimpleSummation());
+            IAxonFactory axonFactory = AxonFactory.GetInstance(new TanhActivationFunction());
+            Random random = new Random();
+            RandomWeightInitializer randomInit = new RandomWeightInitializer(random);
+            ISynapseFactory synapseFactory = SynapseFactory.GetInstance(randomInit, axonFactory);
+            ISynapseFactory ioSynapseFactory = SynapseFactory.GetInstance(new ConstantWeightInitializer(1.0), AxonFactory.GetInstance(new IdentityActivationFunction()));
+            INeuronFactory neuronFactory = NeuronFactory.GetInstance();
             return new NeuralNetworkFactory(somaFactory, axonFactory, synapseFactory, ioSynapseFactory, randomInit, neuronFactory);
         }
 
-        internal INeuron CreateNeuron(Dictionary<int, Dictionary<int, IList<Synapse>>> mapping, int layerIndex, int neuronIndex)
+        internal INeuron CreateNeuron(IDictionary<int, IDictionary<int, IList<Synapse>>> mapping, int layerIndex, int neuronIndex)
         {
-            var dendrites = (layerIndex > 0) ? getDendritesForSoma(layerIndex, neuronIndex, mapping) : mapping[layerIndex][neuronIndex];
+            IList<Synapse> dendrites = (layerIndex > 0) ? GetDendritesForSoma(layerIndex, neuronIndex, mapping) : mapping[layerIndex][neuronIndex];
 
-            var soma = _somaFactory.Create(dendrites, _biasInitiliazer.InitializeWeight());
+            ISoma soma = _somaFactory.Create(dendrites, _biasInitiliazer.InitializeWeight());
 
-            var terminals = mapping[layerIndex + 1][neuronIndex];
-            var axon = _axonFactory.Create(terminals);
+            IList<Synapse> terminals = mapping[layerIndex + 1][neuronIndex];
+            IAxon axon = _axonFactory.Create(terminals);
 
             return _neuronFactory.Create(soma, axon);
         }
 
         //Used for input/output lists
-        internal IList<Synapse> GetAllSynapsesFromLayerMapping(Dictionary<int, IList<Synapse>> layerMapping)
+        internal IList<Synapse> GetAllSynapsesFromLayerMapping(IDictionary<int, IList<Synapse>> layerMapping)
         {
             IList<Synapse> synapses = new List<Synapse>();
-            foreach (var key in layerMapping.Keys)
+            foreach (int key in layerMapping.Keys)
             {
-                var terminals = layerMapping[key];
-                foreach (var terminal in terminals)
+                IList<Synapse> terminals = layerMapping[key];
+                foreach (Synapse terminal in terminals)
                 {
                     synapses.Add(terminal);
                 }
@@ -69,7 +69,7 @@ namespace NeuralNetwork.Core.Factories
             return synapses;
         }
 
-        internal ILayer CreateLayer(Dictionary<int, Dictionary<int, IList<Synapse>>> synapseMapping, int layerInNetwork, int numberOfNeurons)
+        internal ILayer CreateLayer(IDictionary<int, IDictionary<int, IList<Synapse>>> synapseMapping, int layerInNetwork, int numberOfNeurons)
         {
             IList<INeuron> layerNeurons = new List<INeuron>();
             for (int i = 0; i < numberOfNeurons; i++)
@@ -82,10 +82,10 @@ namespace NeuralNetwork.Core.Factories
         public INeuralNetwork Create(int numInputs, int numOutputs, int numHiddenLayers, int numHiddenPerLayer)
         {
             //layer number + position in layer --> list of terminals
-            var mapping = CreateSynapses(numInputs, numOutputs, numHiddenLayers, numHiddenPerLayer);
+            IDictionary<int, IDictionary<int, IList<Synapse>>> mapping = CreateSynapses(numInputs, numOutputs, numHiddenLayers, numHiddenPerLayer);
 
-            var inputs = GetAllSynapsesFromLayerMapping(mapping[0]);
-            var outputs = GetAllSynapsesFromLayerMapping(mapping[mapping.Keys.Count - 1]);
+            IList<Synapse> inputs = GetAllSynapsesFromLayerMapping(mapping[0]);
+            IList<Synapse> outputs = GetAllSynapsesFromLayerMapping(mapping[mapping.Keys.Count - 1]);
 
             ILayer inputLayer = CreateLayer(mapping, 0, numInputs);
 
@@ -104,10 +104,10 @@ namespace NeuralNetwork.Core.Factories
         public INeuralNetwork Create(int numInputs, int numOutputs, IList<int> hiddenLayerSpecs)
         {
             //layer number + position in layer --> list of terminals
-            var mapping = CreateSynapses(numInputs, numOutputs, hiddenLayerSpecs);
+            IDictionary<int, IDictionary<int, IList<Synapse>>> mapping = CreateSynapses(numInputs, numOutputs, hiddenLayerSpecs);
 
-            var inputs = GetAllSynapsesFromLayerMapping(mapping[0]);
-            var outputs = GetAllSynapsesFromLayerMapping(mapping[mapping.Keys.Count - 1]);
+            IList<Synapse> inputs = GetAllSynapsesFromLayerMapping(mapping[0]);
+            IList<Synapse> outputs = GetAllSynapsesFromLayerMapping(mapping[mapping.Keys.Count - 1]);
 
             ILayer inputLayer = CreateLayer(mapping, 0, numInputs);
 
@@ -123,19 +123,20 @@ namespace NeuralNetwork.Core.Factories
             return NeuralNetwork.GetInstance(inputs, inputLayer, hiddenLayers, outputLayer, outputs);
         }
 
-        internal Dictionary<int, Dictionary<int, IList<Synapse>>> CreateSynapses(int numInputs, int numOutputs, IList<int> hiddenLayerSpecs)
+        internal IDictionary<int, IDictionary<int, IList<Synapse>>> CreateSynapses(int numInputs, int numOutputs, IList<int> hiddenLayerSpecs)
         {
             //layer number + position in layer --> list of terminals
-            var mapping = new Dictionary<int, Dictionary<int, IList<Synapse>>>();
+            IDictionary<int, IDictionary<int, IList<Synapse>>> mapping = new Dictionary<int, IDictionary<int, IList<Synapse>>>
+            {
+                //Input synapses
+                [0] = CreateSynapseMapLayer(_inputOutputSynapseFactory, numInputs, 1),
 
-            //Input synapses
-            mapping[0] = CreateSynapseMapLayer(_inputOutputSynapseFactory, numInputs, 1);
-
-            //Input neuron terminals
-            mapping[1] = CreateSynapseMapLayer(_hiddenSynapseFactory, numInputs, hiddenLayerSpecs[0]);
+                //Input neuron terminals
+                [1] = CreateSynapseMapLayer(_hiddenSynapseFactory, numInputs, hiddenLayerSpecs[0])
+            };
 
             //Hidden layers 0 to (n-1)
-            for (var h = 0; h < hiddenLayerSpecs.Count - 1; h++)
+            for (int h = 0; h < hiddenLayerSpecs.Count - 1; h++)
             {
                 mapping[h + 2] = CreateSynapseMapLayer(_hiddenSynapseFactory, hiddenLayerSpecs[h], hiddenLayerSpecs[h + 1]);
             }
@@ -149,19 +150,19 @@ namespace NeuralNetwork.Core.Factories
             return mapping;
         }
 
-        internal Dictionary<int, Dictionary<int, IList<Synapse>>> CreateSynapses(int numInputs, int numOutputs, int numHiddenLayers, int numHiddenPerLayer)
+        internal IDictionary<int, IDictionary<int, IList<Synapse>>> CreateSynapses(int numInputs, int numOutputs, int numHiddenLayers, int numHiddenPerLayer)
         {
-            var hiddenSpecs = new List<int>();
-            for (var i = 0; i < numHiddenLayers; i++)
+            List<int> hiddenSpecs = new List<int>();
+            for (int i = 0; i < numHiddenLayers; i++)
             {
                 hiddenSpecs.Add(numHiddenPerLayer);
             }
             return CreateSynapses(numInputs, numOutputs, hiddenSpecs);
         }
 
-        internal Dictionary<int, IList<Synapse>> CreateSynapseMapLayer(ISynapseFactory synapseFactory, int numberOfNeuronsInLayer, int numberOfTerminalsPerNeuron)
+        internal IDictionary<int, IList<Synapse>> CreateSynapseMapLayer(ISynapseFactory synapseFactory, int numberOfNeuronsInLayer, int numberOfTerminalsPerNeuron)
         {
-            var mapLayer = new Dictionary<int, IList<Synapse>>();
+            Dictionary<int, IList<Synapse>> mapLayer = new Dictionary<int, IList<Synapse>>();
             for (int i = 0; i < numberOfNeuronsInLayer; i++)
             {
                 mapLayer[i] = CreateTerminals(synapseFactory, numberOfTerminalsPerNeuron);
@@ -171,7 +172,7 @@ namespace NeuralNetwork.Core.Factories
 
         internal IList<Synapse> CreateTerminals(ISynapseFactory synapseFactory, int numberOfSynapses)
         {
-            var terminals = new List<Synapse>();
+            List<Synapse> terminals = new List<Synapse>();
             for (int t = 0; t < numberOfSynapses; t++)
             {
                 terminals.Add(synapseFactory.Create());
@@ -179,7 +180,7 @@ namespace NeuralNetwork.Core.Factories
             return terminals;
         }
 
-        private IList<Synapse> getDendritesForSoma(int layer, int terminalIndexInNeuron, Dictionary<int, Dictionary<int, IList<Synapse>>> mapping)
+        private IList<Synapse> GetDendritesForSoma(int layer, int terminalIndexInNeuron, IDictionary<int, IDictionary<int, IList<Synapse>>> mapping)
         {
             //get entire layer before, then grab the nth synapse from each list
             if (layer < 1)
@@ -187,9 +188,9 @@ namespace NeuralNetwork.Core.Factories
                 throw new ArgumentOutOfRangeException("layer must be > 0");
             }
 
-            var neuronMappings = mapping[layer];
+            IDictionary<int, IList<Synapse>> neuronMappings = mapping[layer];
             IList<Synapse> dendrites = new List<Synapse>();
-            foreach (var neuron in neuronMappings.Keys)
+            foreach (int neuron in neuronMappings.Keys)
             {
                 dendrites.Add(neuronMappings[neuron][terminalIndexInNeuron]);
             }
@@ -199,10 +200,10 @@ namespace NeuralNetwork.Core.Factories
 
         public INeuralNetwork Create(NeuralNetworkGene genes)
         {
-            var mapping = CreateSynapsesFromGenes(genes);
+            IDictionary<int, IDictionary<int, IList<Synapse>>> mapping = CreateSynapsesFromGenes(genes);
 
-            var inputs = GetAllSynapsesFromLayerMapping(mapping[0]);
-            var outputs = GetAllSynapsesFromLayerMapping(mapping[mapping.Keys.Count - 1]);
+            IList<Synapse> inputs = GetAllSynapsesFromLayerMapping(mapping[0]);
+            IList<Synapse> outputs = GetAllSynapsesFromLayerMapping(mapping[mapping.Keys.Count - 1]);
 
             ILayer inputLayer = CreateLayerFromGene(genes.InputGene, mapping, 0);
 
@@ -218,16 +219,17 @@ namespace NeuralNetwork.Core.Factories
             return NeuralNetwork.GetInstance(inputs, inputLayer, hiddenLayers, outputLayer, outputs);
         }
 
-        internal Dictionary<int, Dictionary<int, IList<Synapse>>> CreateSynapsesFromGenes(NeuralNetworkGene genes)
+        internal IDictionary<int, IDictionary<int, IList<Synapse>>> CreateSynapsesFromGenes(NeuralNetworkGene genes)
         {
             //layer number + position in layer --> list of terminals
-            var mapping = new Dictionary<int, Dictionary<int, IList<Synapse>>>();
+            IDictionary<int, IDictionary<int, IList<Synapse>>> mapping = new Dictionary<int, IDictionary<int, IList<Synapse>>>
+            {
+                //Input synapses
+                [0] = CreateSynapseMapLayer(_inputOutputSynapseFactory, genes.InputGene.Neurons.Count, 1),
 
-            //Input synapses
-            mapping[0] = CreateSynapseMapLayer(_inputOutputSynapseFactory, genes.InputGene.Neurons.Count, 1);
-
-            //Input neuron terminals
-            mapping[1] = CreateSynapseMapLayerFromLayerGene(_inputOutputSynapseFactory, genes.InputGene);
+                //Input neuron terminals
+                [1] = CreateSynapseMapLayerFromLayerGene(_inputOutputSynapseFactory, genes.InputGene)
+            };
 
             //Hidden layers
             for (int h = 0; h < genes.HiddenGenes.Count; h++)
@@ -241,9 +243,9 @@ namespace NeuralNetwork.Core.Factories
             return mapping;
         }
 
-        internal Dictionary<int, IList<Synapse>> CreateSynapseMapLayerFromLayerGene(ISynapseFactory synapseFactory, LayerGene layerGene)
+        internal IDictionary<int, IList<Synapse>> CreateSynapseMapLayerFromLayerGene(ISynapseFactory synapseFactory, LayerGene layerGene)
         {
-            var mapLayer = new Dictionary<int, IList<Synapse>>();
+            Dictionary<int, IList<Synapse>> mapLayer = new Dictionary<int, IList<Synapse>>();
             for (int i = 0; i < layerGene.Neurons.Count; i++)
             {
                 mapLayer[i] = CreateTerminalsFromWeightList(synapseFactory, layerGene.Neurons[i].Axon.Weights);
@@ -253,7 +255,7 @@ namespace NeuralNetwork.Core.Factories
 
         internal IList<Synapse> CreateTerminalsFromWeightList(ISynapseFactory synapseFactory, IList<double> weights)
         {
-            var terminals = new List<Synapse>();
+            List<Synapse> terminals = new List<Synapse>();
             for (int t = 0; t < weights.Count; t++)
             {
                 terminals.Add(synapseFactory.Create(weights[t]));
@@ -261,7 +263,7 @@ namespace NeuralNetwork.Core.Factories
             return terminals;
         }
 
-        internal ILayer CreateLayerFromGene(LayerGene layerGene, Dictionary<int, Dictionary<int, IList<Synapse>>> synapseMapping, int layerInNetwork)
+        internal ILayer CreateLayerFromGene(LayerGene layerGene, IDictionary<int, IDictionary<int, IList<Synapse>>> synapseMapping, int layerInNetwork)
         {
             IList<INeuron> layerNeurons = new List<INeuron>();
             for (int i = 0; i < layerGene.Neurons.Count; i++)
@@ -271,14 +273,14 @@ namespace NeuralNetwork.Core.Factories
             return Layer.GetInstance(layerNeurons);
         }
 
-        internal INeuron CreateNeuronFromGene(NeuronGene neuronGene, Dictionary<int, Dictionary<int, IList<Synapse>>> mapping, int layerIndex, int neuronIndex)
+        internal INeuron CreateNeuronFromGene(NeuronGene neuronGene, IDictionary<int, IDictionary<int, IList<Synapse>>> mapping, int layerIndex, int neuronIndex)
         {
-            var dendrites = (layerIndex > 0) ? getDendritesForSoma(layerIndex, neuronIndex, mapping) : mapping[layerIndex][neuronIndex];
+            IList<Synapse> dendrites = (layerIndex > 0) ? GetDendritesForSoma(layerIndex, neuronIndex, mapping) : mapping[layerIndex][neuronIndex];
 
-            var soma = _somaFactory.Create(dendrites, neuronGene.Soma.Bias, neuronGene.Soma.SummationFunction);
+            ISoma soma = _somaFactory.Create(dendrites, neuronGene.Soma.Bias, neuronGene.Soma.SummationFunction);
 
-            var terminals = mapping[layerIndex + 1][neuronIndex];
-            var axon = _axonFactory.Create(terminals, neuronGene.Axon.ActivationFunction);
+            IList<Synapse> terminals = mapping[layerIndex + 1][neuronIndex];
+            IAxon axon = _axonFactory.Create(terminals, neuronGene.Axon.ActivationFunction);
 
             return _neuronFactory.Create(soma, axon);
         }

@@ -3,7 +3,14 @@
 public class SomaGene : IEquatable<SomaGene>
 {
     public double Bias;
+
     public Type SummationFunction;
+
+    public SomaGene(double bias, Type summationFunction)
+    {
+        Bias = bias;
+        SummationFunction = summationFunction;
+    }
 
     #region Equality Members
 
@@ -14,9 +21,9 @@ public class SomaGene : IEquatable<SomaGene>
     /// <returns>
     /// True if the fields of the SomaGene objects are the same; false otherwise.
     /// </returns>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        if (obj == null || GetType() != obj.GetType())
+        if (obj is null || GetType() != obj.GetType())
         {
             return false;
         }
@@ -31,9 +38,9 @@ public class SomaGene : IEquatable<SomaGene>
     /// <returns>
     /// True if the fields of the SomaGene objects are the same; false otherwise.
     /// </returns>
-    public bool Equals(SomaGene somaGene)
+    public bool Equals(SomaGene? somaGene)
     {
-        if (somaGene == null)
+        if (somaGene is null)
         {
             return false;
         }
@@ -62,11 +69,13 @@ public class SomaGene : IEquatable<SomaGene>
         {
             return true;
         }
+
         // If one or the other is null, return false.
-        if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+        if (a is null || b is null)
         {
             return false;
         }
+
         return a.Equals(b);
     }
 
@@ -84,7 +93,7 @@ public class SomaGene : IEquatable<SomaGene>
     {
         unchecked // Overflow is fine, just wrap
         {
-            var hash = (int)2166136261;
+            int hash = (int)2166136261;
             hash = hash * 16777619 ^ Bias.GetHashCode() ^ SummationFunction.GetHashCode();
             return hash;
         }

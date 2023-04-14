@@ -16,7 +16,7 @@ namespace NeuralNetwork.Core
             ActivationFunction = activationFunction;
             Terminals = terminals;
             Value = 0.0;
-            foreach (var synapse in terminals)
+            foreach (Synapse synapse in terminals)
             {
                 synapse.Axon = this;
             }
@@ -29,10 +29,10 @@ namespace NeuralNetwork.Core
 
         public virtual void ProcessSignal(double signal)
         {
-            Value = calculateActivation(signal);
+            Value = CalculateActivation(signal);
         }
 
-        internal double calculateActivation(double signal)
+        internal double CalculateActivation(double signal)
         {
             return ActivationFunction.CalculateActivation(signal);
         }

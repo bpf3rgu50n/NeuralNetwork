@@ -3,48 +3,20 @@
 public class AxonGene : IEquatable<AxonGene>
 {
     public Type ActivationFunction { get; set; }
+
     public IList<double> Weights { get; set; }
+
+    public AxonGene(Type activationFunction, IList<double> weights)
+    {
+        ActivationFunction = activationFunction;
+        Weights = weights;
+    }
 
     #region Equality Members
 
-    /// <summary>
-    /// Returns true if the fields of the AxonGene objects are the same.
-    /// </summary>
-    /// <param name="obj">The AxonGene object to compare with.</param>
-    /// <returns>
-    /// True if the fields of the AxonGene objects are the same; false otherwise.
-    /// </returns>
-    public override bool Equals(object obj)
+    public static bool operator !=(AxonGene a, AxonGene b)
     {
-        if (obj == null || GetType() != obj.GetType())
-        {
-            return false;
-        }
-
-        return Equals(obj as AxonGene);
-    }
-
-    /// <summary>
-    /// Returns true if the fields of the AxonGene objects are the same.
-    /// </summary>
-    /// <param name="axonGene">The AxonGene object to compare with.</param>
-    /// <returns>
-    /// True if the fields of the AxonGene objects are the same; false otherwise.
-    /// </returns>
-    public bool Equals(AxonGene axonGene)
-    {
-        if (axonGene == null)
-        {
-            return false;
-        }
-
-        if (axonGene.ActivationFunction != ActivationFunction || axonGene.Weights.Count != Weights.Count)
-        {
-            return false;
-        }
-
-        const double tolerance = 0.00001;
-        return !Weights.Where((t, i) => Math.Abs(t - axonGene.Weights[i]) > tolerance).Any();
+        return !(a == b);
     }
 
     /// <summary>
@@ -64,16 +36,51 @@ public class AxonGene : IEquatable<AxonGene>
             return true;
         }
         // If one or the other is null, return false.
-        if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+        if (a is null || b is null)
         {
             return false;
         }
         return a.Equals(b);
     }
 
-    public static bool operator !=(AxonGene a, AxonGene b)
+    /// <summary>
+    /// Returns true if the fields of the AxonGene objects are the same.
+    /// </summary>
+    /// <param name="obj">The AxonGene object to compare with.</param>
+    /// <returns>
+    /// True if the fields of the AxonGene objects are the same; false otherwise.
+    /// </returns>
+    public override bool Equals(object? obj)
     {
-        return !(a == b);
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        return Equals(obj as AxonGene);
+    }
+
+    /// <summary>
+    /// Returns true if the fields of the AxonGene objects are the same.
+    /// </summary>
+    /// <param name="axonGene">The AxonGene object to compare with.</param>
+    /// <returns>
+    /// True if the fields of the AxonGene objects are the same; false otherwise.
+    /// </returns>
+    public bool Equals(AxonGene? axonGene)
+    {
+        if (axonGene is null)
+        {
+            return false;
+        }
+
+        if (axonGene.ActivationFunction != ActivationFunction || axonGene.Weights.Count != Weights.Count)
+        {
+            return false;
+        }
+
+        const double tolerance = 0.00001;
+        return !Weights.Where((t, i) => Math.Abs(t - axonGene.Weights[i]) > tolerance).Any();
     }
 
     // Following this algorithm: http://stackoverflow.com/a/263416
@@ -83,12 +90,7 @@ public class AxonGene : IEquatable<AxonGene>
     /// <returns>The hash code of the AxonGene.</returns>
     public override int GetHashCode()
     {
-        unchecked // Overflow is fine, just wrap
-        {
-            var hash = (int)2166136261;
-            hash = hash * 16777619 ^ Weights.GetHashCode();
-            return hash;
-        }
+        return HashCode.Combine(Weights);
     }
 
     #endregion Equality Members
