@@ -54,9 +54,11 @@ public class NeuralNetwork : INeuralNetwork
     public double[] GetOutputs()
     {
         double[] outputs = new double[Outputs.Count];
+
         for (int i = 0; i < Outputs.Count; i++)
         {
-            outputs[i] = Outputs[i].Axon.Value;
+            Synapse synapse = Outputs[i];
+            outputs[i] = synapse.Axon?.Value ?? 0d;
         }
         return outputs;
     }

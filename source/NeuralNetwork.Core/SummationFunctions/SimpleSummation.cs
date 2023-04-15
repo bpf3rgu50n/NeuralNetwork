@@ -8,7 +8,7 @@ public class SimpleSummation : ISummationFunction
 
         foreach (Synapse synapse in dendrites)
         {
-            sum += synapse.Axon.Value * synapse.Weight;
+            sum += synapse.Axon?.Value ?? 0d * synapse.Weight;
         }
         return sum;
     }

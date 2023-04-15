@@ -13,7 +13,7 @@ public class AverageSummation : ISummationFunction
 
         foreach (Synapse synapse in dendrites)
         {
-            average += synapse.Axon.Value * synapse.Weight;
+            average += synapse.Axon?.Value ?? 0d * synapse.Weight;
         }
 
         return average / dendrites.Count;
