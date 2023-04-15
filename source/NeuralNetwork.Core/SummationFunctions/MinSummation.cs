@@ -7,7 +7,7 @@ public class MinSummation : ISummationFunction
         double min = bias;
         foreach (Synapse synapse in dendrites)
         {
-            double weightedValue = synapse.Axon.Value * synapse.Weight;
+            double weightedValue = synapse.Axon?.Value ?? 0d * synapse.Weight;
 
             if (weightedValue < min)
             {
