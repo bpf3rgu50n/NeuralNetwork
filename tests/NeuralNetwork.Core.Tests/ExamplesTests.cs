@@ -1,5 +1,6 @@
 ﻿using NeuralNetwork.Core.ActivationFunctions;
 using NeuralNetwork.Core.Factories;
+using NeuralNetwork.Core.Genes;
 using NeuralNetwork.Core.WeightInitializer;
 
 namespace NeuralNetwork.Core.Tests;
@@ -36,26 +37,35 @@ public class ExamplesTests
         int numHiddenLayers = 1;
         int numNeuronsInHiddenLayer = 5;
 
-        INeuralNetwork network = factory.Create(numInputs, numOutputs, numHiddenLayers, numNeuronsInHiddenLayer);
+        INeuralNetwork network1 = factory.Create(numInputs, numOutputs, numHiddenLayers, numNeuronsInHiddenLayer);
+        INeuralNetwork network2 = factory.Create(numInputs, numOutputs, numHiddenLayers, numNeuronsInHiddenLayer);
 
         double[] inputs = new double[] { 1.4d, 2.04045d, 4.2049558d };
 
-        network.SetInputs(inputs);
-        network.Process();
+        network1.SetInputs(inputs);
+        network1.Process();
 
-        double[] outputs = network.GetOutputs();
+        double[] outputs = network1.GetOutputs();
 
         outputs.Should().NotBeNull();
         outputs.Should().HaveCount(1);
         double output = outputs.First();
 
         output.Should().BeApproximately(0.99d, 0.01d);
+
+        NeuralNetworkGene genes1_1 = network1.GetGenes();
+        NeuralNetworkGene genes1_2 = network1.GetGenes();
+
+        genes1_1.Should().BeEquivalentTo(genes1_2);
+
+        NeuralNetworkGene genes2_1 = network2.GetGenes();
+        genes1_1.Should().NotBeEquivalentTo(genes2_1);
     }
 
     [Fact]
     public void Custom_NeuralNetwork()
     {
-        RandomWeightInitializer randomInit = new RandomWeightInitializer(new Random());
+        RandomWeightInitializer randomInit = new(new Random());
 
         ISomaFactory somaFactory = SomaFactory.GetInstance(new SimpleSummation());
         IAxonFactory axonFactory = AxonFactory.GetInstance(new TanhActivationFunction());

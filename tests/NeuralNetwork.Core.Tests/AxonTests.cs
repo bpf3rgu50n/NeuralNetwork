@@ -20,7 +20,6 @@ public class AxonTests
     [Fact]
     public void Foo()
     {
-        //ISummationFunction summationFunction = new SimpleSummation();
         IActivationFunction activationFunction = new SigmoidActivationFunction();
 
         IList<Synapse> terminals = new List<Synapse>() {

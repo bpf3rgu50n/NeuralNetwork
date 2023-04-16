@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{
 		.gitignore = .gitignore
 		LICENSE = LICENSE
 		README.md = README.md
+		SECURITY.md = SECURITY.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork.Core", "source\NeuralNetwork.Core\NeuralNetwork.Core.csproj", "{B4FAC650-EE04-4BDF-AD21-8CF58CA7A209}"
