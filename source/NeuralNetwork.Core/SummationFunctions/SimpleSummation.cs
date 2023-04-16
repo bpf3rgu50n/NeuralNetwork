@@ -10,6 +10,7 @@ public class SimpleSummation : ISummationFunction
         {
             sum += synapse.Axon?.Value ?? 0d * synapse.Weight;
         }
+
         return sum;
     }
 }

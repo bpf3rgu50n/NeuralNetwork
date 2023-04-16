@@ -4,11 +4,13 @@ namespace NeuralNetwork.Core;
 
 public class Soma : ISoma
 {
+    public double Bias { get; set; }
+
     public IList<Synapse> Dendrites { get; set; }
 
-    public ISummationFunction SummationFunction { get; set; }
+    public Guid Identifier { get; } = Guid.NewGuid();
 
-    public double Bias { get; set; }
+    public ISummationFunction SummationFunction { get; set; }
 
     public double Value { get; protected set; }
 

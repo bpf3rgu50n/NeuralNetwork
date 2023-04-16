@@ -5,6 +5,7 @@ public class MinSummation : ISummationFunction
     public double CalculateSummation(IList<Synapse> dendrites, double bias)
     {
         double min = bias;
+
         foreach (Synapse synapse in dendrites)
         {
             double weightedValue = synapse.Axon?.Value ?? 0d * synapse.Weight;
@@ -14,6 +15,7 @@ public class MinSummation : ISummationFunction
                 min = weightedValue;
             }
         }
+
         return min;
     }
 }

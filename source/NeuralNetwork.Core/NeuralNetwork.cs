@@ -5,13 +5,15 @@ namespace NeuralNetwork.Core;
 [Serializable]
 public class NeuralNetwork : INeuralNetwork
 {
-    public ILayer InputLayer { get; set; }
-
     public IList<ILayer> HiddenLayers { get; set; }
 
-    public ILayer OutputLayer { get; set; }
+    public Guid Identifier { get; } = Guid.NewGuid();
+
+    public ILayer InputLayer { get; set; }
 
     public IList<Synapse> Inputs { get; set; }
+
+    public ILayer OutputLayer { get; set; }
 
     public IList<Synapse> Outputs { get; set; }
 
@@ -29,26 +31,13 @@ public class NeuralNetwork : INeuralNetwork
         return new NeuralNetwork(inputs, inputLayer, hiddenLayers, outputLayer, outputs);
     }
 
-    public void SetInputs(double[] inputs)
+    public NeuralNetworkGene GetGenes()
     {
-        if (inputs.Length != Inputs.Count)
-        {
-            throw new ArgumentException(string.Format("inputs of length: {0} does not match the number of input synapses: {1}", inputs.Length, Inputs.Count));
-        }
-        for (int i = 0; i < Inputs.Count; i++)
-        {
-            Inputs[i].Axon?.ProcessSignal(inputs[i]);
-        }
-    }
+        LayerGene inputGene = InputLayer.GetGenes();
+        List<LayerGene> hiddenGenes = HiddenLayers.Select(l => l.GetGenes()).ToList();
+        LayerGene outputGene = OutputLayer.GetGenes();
 
-    public virtual void Process()
-    {
-        InputLayer.Process();
-        foreach (ILayer hiddenLayer in HiddenLayers)
-        {
-            hiddenLayer.Process();
-        }
-        OutputLayer.Process();
+        return new NeuralNetworkGene(hiddenGenes, inputGene, outputGene);
     }
 
     public double[] GetOutputs()
@@ -63,13 +52,26 @@ public class NeuralNetwork : INeuralNetwork
         return outputs;
     }
 
-    public NeuralNetworkGene GetGenes()
+    public virtual void Process()
     {
-        LayerGene inputGene = InputLayer.GetGenes();
-        List<LayerGene> hiddenGenes = HiddenLayers.Select(l => l.GetGenes()).ToList();
-        LayerGene outputGene = OutputLayer.GetGenes();
+        InputLayer.Process();
+        foreach (ILayer hiddenLayer in HiddenLayers)
+        {
+            hiddenLayer.Process();
+        }
+        OutputLayer.Process();
+    }
 
-        return new NeuralNetworkGene(hiddenGenes, inputGene, outputGene);
+    public void SetInputs(double[] inputs)
+    {
+        if (inputs.Length != Inputs.Count)
+        {
+            throw new ArgumentException(string.Format("inputs of length: {0} does not match the number of input synapses: {1}", inputs.Length, Inputs.Count));
+        }
+        for (int i = 0; i < Inputs.Count; i++)
+        {
+            Inputs[i].Axon?.ProcessSignal(inputs[i]);
+        }
     }
 
     ///**

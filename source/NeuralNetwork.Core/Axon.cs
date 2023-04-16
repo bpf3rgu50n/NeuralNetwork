@@ -7,6 +7,8 @@ public class Axon : IAxon
 {
     public IActivationFunction ActivationFunction { get; set; }
 
+    public Guid Identifier { get; } = Guid.NewGuid();
+
     public IList<Synapse> Terminals { get; set; }
 
     public double Value { get; protected set; }

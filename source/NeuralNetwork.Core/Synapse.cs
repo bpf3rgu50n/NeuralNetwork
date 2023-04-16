@@ -4,6 +4,8 @@ public class Synapse
 {
     public IAxon? Axon { get; set; }
 
+    public Guid Identifier { get; } = Guid.NewGuid();
+
     public double Weight { get; set; }
 
     public Synapse() : this(null, 0d)
