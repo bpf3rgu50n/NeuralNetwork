@@ -17,7 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork.Core", "source\NeuralNetwork.Core\NeuralNetwork.Core.csproj", "{B4FAC650-EE04-4BDF-AD21-8CF58CA7A209}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetwork.Core.Tests", "tests\NeuralNetwork.Core.Tests\NeuralNetwork.Core.Tests.csproj", "{0F630E39-E100-4E35-A17C-63732D50248B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork.Core.Tests", "tests\NeuralNetwork.Core.Tests\NeuralNetwork.Core.Tests.csproj", "{0F630E39-E100-4E35-A17C-63732D50248B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6CD2F5E1-2391-45F9-95E3-C9B1C47715DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{31E24D6E-AFCF-4522-AEBA-CCCCD817BB85} = {D4907A44-B997-4C6C-9055-47DC7E28008B}
 		{B4FAC650-EE04-4BDF-AD21-8CF58CA7A209} = {D4907A44-B997-4C6C-9055-47DC7E28008B}
+		{0F630E39-E100-4E35-A17C-63732D50248B} = {6CD2F5E1-2391-45F9-95E3-C9B1C47715DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F73B0AF6-58AC-4191-A847-9AD4402884FD}
