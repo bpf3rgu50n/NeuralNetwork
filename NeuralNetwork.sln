@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{D4907A44-B997-4C6C-9055-47DC7E28008B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetwork", "source\NeuralNetwork\NeuralNetwork.csproj", "{31E24D6E-AFCF-4522-AEBA-CCCCD817BB85}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{D7A25ACC-6580-4AFF-97DA-35A4E0F6E51F}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
@@ -27,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{31E24D6E-AFCF-4522-AEBA-CCCCD817BB85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31E24D6E-AFCF-4522-AEBA-CCCCD817BB85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31E24D6E-AFCF-4522-AEBA-CCCCD817BB85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31E24D6E-AFCF-4522-AEBA-CCCCD817BB85}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B4FAC650-EE04-4BDF-AD21-8CF58CA7A209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4FAC650-EE04-4BDF-AD21-8CF58CA7A209}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4FAC650-EE04-4BDF-AD21-8CF58CA7A209}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,7 +38,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{31E24D6E-AFCF-4522-AEBA-CCCCD817BB85} = {D4907A44-B997-4C6C-9055-47DC7E28008B}
 		{B4FAC650-EE04-4BDF-AD21-8CF58CA7A209} = {D4907A44-B997-4C6C-9055-47DC7E28008B}
 		{0F630E39-E100-4E35-A17C-63732D50248B} = {6CD2F5E1-2391-45F9-95E3-C9B1C47715DF}
 	EndGlobalSection
