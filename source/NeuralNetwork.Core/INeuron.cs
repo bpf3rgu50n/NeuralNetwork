@@ -4,11 +4,10 @@ namespace NeuralNetwork.Core;
 
 public interface INeuron
 {
+    IAxon Axon { get; set; }
     ISoma Soma { get; set; }
 
-    IAxon Axon { get; set; }
+    NeuronGene GetGenes();
 
     void Process();
-
-    NeuronGene GetGenes();
 }

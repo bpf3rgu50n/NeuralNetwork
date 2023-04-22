@@ -2,11 +2,15 @@
 
 public class AxonGene : IEquatable<AxonGene>
 {
-    public Type ActivationFunction { get; set; }
+    public Type? ActivationFunction { get; set; }
 
     public IList<double> Weights { get; set; }
 
-    public AxonGene(Type activationFunction, IList<double> weights)
+    public AxonGene() : this(null, new List<double>())
+    {
+    }
+
+    public AxonGene(Type? activationFunction, IList<double> weights)
     {
         ActivationFunction = activationFunction;
         Weights = weights;

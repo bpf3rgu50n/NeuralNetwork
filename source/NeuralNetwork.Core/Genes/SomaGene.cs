@@ -4,15 +4,50 @@ public class SomaGene : IEquatable<SomaGene>
 {
     public double Bias;
 
-    public Type SummationFunction;
+    public Type? SummationFunction;
 
-    public SomaGene(double bias, Type summationFunction)
+    public SomaGene() : this(0.0d, null)
+    {
+    }
+
+    public SomaGene(double bias, Type? summationFunction)
     {
         Bias = bias;
         SummationFunction = summationFunction;
     }
 
     #region Equality Members
+
+    public static bool operator !=(SomaGene a, SomaGene b)
+    {
+        return !(a == b);
+    }
+
+    /// <summary>
+    /// Returns true if the fields of the SomaGene objects are the same.
+    /// </summary>
+    /// <param name="a">The SomaGene object to compare.</param>
+    /// <param name="b">The SomaGene object to compare.</param>
+    /// <returns>
+    /// True if the objects are the same, are both null, or have the same values;
+    /// false otherwise.
+    /// </returns>
+    public static bool operator ==(SomaGene a, SomaGene b)
+    {
+        // If both are null, or both are same instance, return true.
+        if (ReferenceEquals(a, b))
+        {
+            return true;
+        }
+
+        // If one or the other is null, return false.
+        if (a is null || b is null)
+        {
+            return false;
+        }
+
+        return a.Equals(b);
+    }
 
     /// <summary>
     /// Returns true if the fields of the SomaGene objects are the same.
@@ -51,37 +86,6 @@ public class SomaGene : IEquatable<SomaGene>
         }
 
         return true;
-    }
-
-    /// <summary>
-    /// Returns true if the fields of the SomaGene objects are the same.
-    /// </summary>
-    /// <param name="a">The SomaGene object to compare.</param>
-    /// <param name="b">The SomaGene object to compare.</param>
-    /// <returns>
-    /// True if the objects are the same, are both null, or have the same values;
-    /// false otherwise.
-    /// </returns>
-    public static bool operator ==(SomaGene a, SomaGene b)
-    {
-        // If both are null, or both are same instance, return true.
-        if (ReferenceEquals(a, b))
-        {
-            return true;
-        }
-
-        // If one or the other is null, return false.
-        if (a is null || b is null)
-        {
-            return false;
-        }
-
-        return a.Equals(b);
-    }
-
-    public static bool operator !=(SomaGene a, SomaGene b)
-    {
-        return !(a == b);
     }
 
     // Following this algorithm: http://stackoverflow.com/a/263416

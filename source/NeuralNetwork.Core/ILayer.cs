@@ -4,9 +4,9 @@ namespace NeuralNetwork.Core;
 
 public interface ILayer
 {
-    void Process();
+    IList<INeuron> NeuronsInLayer { get; set; }
 
     LayerGene GetGenes();
 
-    IList<INeuron> NeuronsInLayer { get; set; }
+    void Process();
 }

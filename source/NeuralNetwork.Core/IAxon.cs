@@ -5,13 +5,13 @@ namespace NeuralNetwork.Core;
 
 public interface IAxon
 {
-    IList<Synapse> Terminals { get; set; }
-
     IActivationFunction ActivationFunction { get; set; }
 
-    void ProcessSignal(double signal);
+    IList<Synapse> Terminals { get; set; }
 
     double Value { get; }
 
     AxonGene GetGenes();
+
+    void ProcessSignal(double signal);
 }

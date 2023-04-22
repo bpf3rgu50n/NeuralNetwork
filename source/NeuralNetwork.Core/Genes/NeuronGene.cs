@@ -2,9 +2,13 @@
 
 public class NeuronGene : IEquatable<NeuronGene>
 {
-    public AxonGene Axon { get; set; }
+    public AxonGene? Axon { get; set; }
 
-    public SomaGene Soma { get; set; }
+    public SomaGene? Soma { get; set; }
+
+    public NeuronGene()
+    {
+    }
 
     public NeuronGene(SomaGene soma, AxonGene axon)
     {
