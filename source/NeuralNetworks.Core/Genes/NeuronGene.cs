@@ -18,7 +18,7 @@ public class NeuronGene : IEquatable<NeuronGene>
 
     #region Equality Members
 
-    public static bool operator !=(NeuronGene a, NeuronGene b)
+    public static bool operator !=(NeuronGene? a, NeuronGene? b)
     {
         return !(a == b);
     }
@@ -32,7 +32,7 @@ public class NeuronGene : IEquatable<NeuronGene>
     /// True if the objects are the same, are both null, or have the same values;
     /// false otherwise.
     /// </returns>
-    public static bool operator ==(NeuronGene a, NeuronGene b)
+    public static bool operator ==(NeuronGene? a, NeuronGene? b)
     {
         // If both are null, or both are same instance, return true.
         if (ReferenceEquals(a, b))
@@ -94,12 +94,8 @@ public class NeuronGene : IEquatable<NeuronGene>
     /// <returns>The hash code of the NeuronGene.</returns>
     public override int GetHashCode()
     {
-        unchecked // Overflow is fine, just wrap
-        {
-            int hash = (int)2166136261;
-            hash = hash * 16777619 ^ Axon.GetHashCode() ^ Soma.GetHashCode();
-            return hash;
-        }
+        int hash = HashCode.Combine(typeof(NeuronGene), Axon, Soma);
+        return hash;
     }
 
     #endregion Equality Members

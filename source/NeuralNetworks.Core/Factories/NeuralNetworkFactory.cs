@@ -120,7 +120,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
         Dictionary<int, IList<Synapse>> mapLayer = new();
         for (int i = 0; i < layerGene.Neurons.Count; i++)
         {
-            mapLayer[i] = CreateTerminalsFromWeightList(synapseFactory, layerGene.Neurons[i].Axon.Weights);
+            mapLayer[i] = CreateTerminalsFromWeightList(synapseFactory, layerGene.Neurons[i].Axon?.Weights ?? Array.Empty<double>());
         }
         return mapLayer;
     }
@@ -196,10 +196,10 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
     {
         IList<Synapse> dendrites = (layerIndex > 0) ? GetDendritesForSoma(layerIndex, neuronIndex, mapping) : mapping[layerIndex][neuronIndex];
 
-        ISoma soma = _somaFactory.Create(dendrites, neuronGene.Soma.Bias, neuronGene.Soma.SummationFunction);
+        ISoma soma = _somaFactory.Create(dendrites, neuronGene.Soma?.Bias ?? throw new NullReferenceException(), neuronGene.Soma?.SummationFunction ?? throw new NullReferenceException());
 
         IList<Synapse> terminals = mapping[layerIndex + 1][neuronIndex];
-        IAxon axon = _axonFactory.Create(terminals, neuronGene.Axon.ActivationFunction);
+        IAxon axon = _axonFactory.Create(terminals, neuronGene.Axon?.ActivationFunction ?? throw new NullReferenceException());
 
         return _neuronFactory.Create(soma, axon);
     }

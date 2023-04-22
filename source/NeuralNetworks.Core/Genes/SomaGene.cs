@@ -2,9 +2,8 @@
 
 public class SomaGene : IEquatable<SomaGene>
 {
-    public double Bias;
-
-    public Type? SummationFunction;
+    public double Bias { get; set; }
+    public Type? SummationFunction { get; set; }
 
     public SomaGene() : this(0.0d, null)
     {
@@ -18,7 +17,7 @@ public class SomaGene : IEquatable<SomaGene>
 
     #region Equality Members
 
-    public static bool operator !=(SomaGene a, SomaGene b)
+    public static bool operator !=(SomaGene? a, SomaGene? b)
     {
         return !(a == b);
     }
@@ -32,7 +31,7 @@ public class SomaGene : IEquatable<SomaGene>
     /// True if the objects are the same, are both null, or have the same values;
     /// false otherwise.
     /// </returns>
-    public static bool operator ==(SomaGene a, SomaGene b)
+    public static bool operator ==(SomaGene? a, SomaGene? b)
     {
         // If both are null, or both are same instance, return true.
         if (ReferenceEquals(a, b))
@@ -95,12 +94,8 @@ public class SomaGene : IEquatable<SomaGene>
     /// <returns>The hash code of the SomaGene.</returns>
     public override int GetHashCode()
     {
-        unchecked // Overflow is fine, just wrap
-        {
-            int hash = (int)2166136261;
-            hash = hash * 16777619 ^ Bias.GetHashCode() ^ SummationFunction.GetHashCode();
-            return hash;
-        }
+        int hash = HashCode.Combine(typeof(SomaGene), Bias, SummationFunction);
+        return hash;
     }
 
     #endregion Equality Members

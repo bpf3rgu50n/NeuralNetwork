@@ -18,7 +18,7 @@ public class AxonGene : IEquatable<AxonGene>
 
     #region Equality Members
 
-    public static bool operator !=(AxonGene a, AxonGene b)
+    public static bool operator !=(AxonGene? a, AxonGene? b)
     {
         return !(a == b);
     }
@@ -32,7 +32,7 @@ public class AxonGene : IEquatable<AxonGene>
     /// True if the objects are the same, are both null, or have the same values;
     /// false otherwise.
     /// </returns>
-    public static bool operator ==(AxonGene a, AxonGene b)
+    public static bool operator ==(AxonGene? a, AxonGene? b)
     {
         // If both are null, or both are same instance, return true.
         if (ReferenceEquals(a, b))
@@ -94,7 +94,8 @@ public class AxonGene : IEquatable<AxonGene>
     /// <returns>The hash code of the AxonGene.</returns>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Weights);
+        int hash = HashCode.Combine(typeof(AxonGene), ActivationFunction, Weights);
+        return hash;
     }
 
     #endregion Equality Members

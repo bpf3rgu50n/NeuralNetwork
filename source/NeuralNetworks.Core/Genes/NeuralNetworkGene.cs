@@ -2,9 +2,9 @@
 
 public class NeuralNetworkGene : IEquatable<NeuralNetworkGene>
 {
-    public IList<LayerGene> HiddenGenes;
-    public LayerGene InputGene;
-    public LayerGene OutputGene;
+    public IList<LayerGene> HiddenGenes { get; set; }
+    public LayerGene InputGene { get; set; }
+    public LayerGene OutputGene { get; set; }
 
     public NeuralNetworkGene(IList<LayerGene> hiddenGenes, LayerGene inputGene, LayerGene outputGene)
     {
@@ -15,7 +15,7 @@ public class NeuralNetworkGene : IEquatable<NeuralNetworkGene>
 
     #region Equality Members
 
-    public static bool operator !=(NeuralNetworkGene a, NeuralNetworkGene b)
+    public static bool operator !=(NeuralNetworkGene? a, NeuralNetworkGene? b)
     {
         return !(a == b);
     }
@@ -29,7 +29,7 @@ public class NeuralNetworkGene : IEquatable<NeuralNetworkGene>
     /// True if the objects are the same, are both null, or have the same values;
     /// false otherwise.
     /// </returns>
-    public static bool operator ==(NeuralNetworkGene a, NeuralNetworkGene b)
+    public static bool operator ==(NeuralNetworkGene? a, NeuralNetworkGene? b)
     {
         // If both are null, or both are same instance, return true.
         if (ReferenceEquals(a, b))
@@ -94,12 +94,8 @@ public class NeuralNetworkGene : IEquatable<NeuralNetworkGene>
     /// <returns>The hash code of the NeuralNetworkGene.</returns>
     public override int GetHashCode()
     {
-        unchecked // Overflow is fine, just wrap
-        {
-            int hash = (int)2166136261;
-            hash = hash * 16777619 ^ InputGene.GetHashCode() ^ HiddenGenes.GetHashCode() ^ OutputGene.GetHashCode();
-            return hash;
-        }
+        int hash = HashCode.Combine(typeof(NeuralNetworkGene), InputGene, HiddenGenes, OutputGene);
+        return hash;
     }
 
     #endregion Equality Members

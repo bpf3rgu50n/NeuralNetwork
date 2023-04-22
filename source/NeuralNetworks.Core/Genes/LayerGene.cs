@@ -2,7 +2,7 @@
 
 public class LayerGene : IEquatable<LayerGene>
 {
-    public IList<NeuronGene> Neurons;
+    public IList<NeuronGene> Neurons { get; set; }
 
     public LayerGene(IList<NeuronGene> neurons)
     {
@@ -11,7 +11,7 @@ public class LayerGene : IEquatable<LayerGene>
 
     #region Equality Members
 
-    public static bool operator !=(LayerGene a, LayerGene b)
+    public static bool operator !=(LayerGene? a, LayerGene? b)
     {
         return !(a == b);
     }
@@ -25,7 +25,7 @@ public class LayerGene : IEquatable<LayerGene>
     /// True if the objects are the same, are both null, or have the same values;
     /// false otherwise.
     /// </returns>
-    public static bool operator ==(LayerGene a, LayerGene b)
+    public static bool operator ==(LayerGene? a, LayerGene? b)
     {
         // If both are null, or both are same instance, return true.
         if (ReferenceEquals(a, b))
@@ -87,7 +87,8 @@ public class LayerGene : IEquatable<LayerGene>
     /// <returns>The hash code of the LayerGene.</returns>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Neurons);
+        int hash = HashCode.Combine(typeof(LayerGene), Neurons);
+        return hash;
     }
 
     #endregion Equality Members
