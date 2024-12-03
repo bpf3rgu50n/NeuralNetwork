@@ -23,7 +23,7 @@ public class AxonFactory : IAxonFactory
 
     public IAxon Create()
     {
-        return Axon.GetInstance(new List<Synapse>(), _activationFunction);
+        return Axon.GetInstance([], _activationFunction);
     }
 
     public IAxon Create(IList<Synapse> terminals, Type activationFunction)

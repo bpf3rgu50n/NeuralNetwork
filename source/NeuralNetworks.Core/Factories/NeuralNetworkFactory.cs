@@ -51,7 +51,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
         ILayer inputLayer = CreateLayer(mapping, 0, numInputs);
 
         //Hidden layers
-        IList<ILayer> hiddenLayers = new List<ILayer>();
+        IList<ILayer> hiddenLayers = [];
         for (int h = 0; h < numHiddenLayers; h++)
         {
             hiddenLayers.Add(CreateLayer(mapping, h + 1, numHiddenPerLayer));
@@ -73,7 +73,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
         ILayer inputLayer = CreateLayer(mapping, 0, numInputs);
 
         //Hidden layers
-        IList<ILayer> hiddenLayers = new List<ILayer>();
+        IList<ILayer> hiddenLayers = [];
         for (int h = 0; h < hiddenLayerSpecs.Count; h++)
         {
             hiddenLayers.Add(CreateLayer(mapping, h + 1, hiddenLayerSpecs[h]));
@@ -94,7 +94,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
         ILayer inputLayer = CreateLayerFromGene(genes.InputGene, mapping, 0);
 
         //Hidden layers
-        IList<ILayer> hiddenLayers = new List<ILayer>();
+        IList<ILayer> hiddenLayers = [];
         for (int h = 0; h < genes.HiddenGenes.Count; h++)
         {
             hiddenLayers.Add(CreateLayerFromGene(genes.HiddenGenes[h], mapping, h + 1));
@@ -107,7 +107,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
 
     internal static Dictionary<int, IList<Synapse>> CreateSynapseMapLayer(ISynapseFactory synapseFactory, int numberOfNeuronsInLayer, int numberOfTerminalsPerNeuron)
     {
-        Dictionary<int, IList<Synapse>> mapLayer = new();
+        Dictionary<int, IList<Synapse>> mapLayer = [];
         for (int i = 0; i < numberOfNeuronsInLayer; i++)
         {
             mapLayer[i] = CreateTerminals(synapseFactory, numberOfTerminalsPerNeuron);
@@ -117,7 +117,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
 
     internal static Dictionary<int, IList<Synapse>> CreateSynapseMapLayerFromLayerGene(ISynapseFactory synapseFactory, LayerGene layerGene)
     {
-        Dictionary<int, IList<Synapse>> mapLayer = new();
+        Dictionary<int, IList<Synapse>> mapLayer = [];
         for (int i = 0; i < layerGene.Neurons.Count; i++)
         {
             mapLayer[i] = CreateTerminalsFromWeightList(synapseFactory, layerGene.Neurons[i].Axon?.Weights ?? Array.Empty<double>());
@@ -127,7 +127,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
 
     internal static IList<Synapse> CreateTerminals(ISynapseFactory synapseFactory, int numberOfSynapses)
     {
-        List<Synapse> terminals = new();
+        List<Synapse> terminals = [];
         for (int t = 0; t < numberOfSynapses; t++)
         {
             terminals.Add(synapseFactory.Create());
@@ -137,7 +137,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
 
     internal static IList<Synapse> CreateTerminalsFromWeightList(ISynapseFactory synapseFactory, IList<double> weights)
     {
-        List<Synapse> terminals = new();
+        List<Synapse> terminals = [];
         for (int t = 0; t < weights.Count; t++)
         {
             terminals.Add(synapseFactory.Create(weights[t]));
@@ -148,7 +148,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
     //Used for input/output lists
     internal static IList<Synapse> GetAllSynapsesFromLayerMapping(Dictionary<int, IList<Synapse>> layerMapping)
     {
-        IList<Synapse> synapses = new List<Synapse>();
+        IList<Synapse> synapses = [];
         foreach (int key in layerMapping.Keys)
         {
             IList<Synapse> terminals = layerMapping[key];
@@ -162,7 +162,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
 
     internal ILayer CreateLayer(Dictionary<int, Dictionary<int, IList<Synapse>>> synapseMapping, int layerInNetwork, int numberOfNeurons)
     {
-        IList<INeuron> layerNeurons = new List<INeuron>();
+        IList<INeuron> layerNeurons = [];
         for (int i = 0; i < numberOfNeurons; i++)
         {
             layerNeurons.Add(CreateNeuron(synapseMapping, layerInNetwork, i));
@@ -172,7 +172,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
 
     internal ILayer CreateLayerFromGene(LayerGene layerGene, Dictionary<int, Dictionary<int, IList<Synapse>>> synapseMapping, int layerInNetwork)
     {
-        IList<INeuron> layerNeurons = new List<INeuron>();
+        IList<INeuron> layerNeurons = [];
         for (int i = 0; i < layerGene.Neurons.Count; i++)
         {
             layerNeurons.Add(CreateNeuronFromGene(layerGene.Neurons[i], synapseMapping, layerInNetwork, i));
@@ -233,7 +233,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
 
     internal Dictionary<int, Dictionary<int, IList<Synapse>>> CreateSynapses(int numInputs, int numOutputs, int numHiddenLayers, int numHiddenPerLayer)
     {
-        List<int> hiddenSpecs = new();
+        List<int> hiddenSpecs = [];
         for (int i = 0; i < numHiddenLayers; i++)
         {
             hiddenSpecs.Add(numHiddenPerLayer);
@@ -274,7 +274,7 @@ public class NeuralNetworkFactory : INeuralNetworkFactory
         }
 
         Dictionary<int, IList<Synapse>> neuronMappings = mapping[layer];
-        IList<Synapse> dendrites = new List<Synapse>();
+        IList<Synapse> dendrites = [];
         foreach (int neuron in neuronMappings.Keys)
         {
             dendrites.Add(neuronMappings[neuron][terminalIndexInNeuron]);

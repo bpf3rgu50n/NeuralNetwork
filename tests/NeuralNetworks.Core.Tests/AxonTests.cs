@@ -7,7 +7,7 @@ public class AxonTests
     [Fact]
     public void Ctor_Returns_Valid()
     {
-        IList<Synapse> terminals = new List<Synapse>();
+        IList<Synapse> terminals = [];
         Mock<IActivationFunction> activationFunctionMock = new();
 
         Axon sut = new(terminals, activationFunctionMock.Object);
@@ -18,14 +18,14 @@ public class AxonTests
     }
 
     [Fact]
-    public void Foo()
+    public void Sigmoid_Ctor_Returns_Valid()
     {
         IActivationFunction activationFunction = new SigmoidActivationFunction();
 
-        IList<Synapse> terminals = new List<Synapse>() {
+        IList<Synapse> terminals = [
             new () { Weight = .5d },
             new () { Weight = .5d },
-        };
+        ];
 
         IAxon sut = Axon.GetInstance(terminals, activationFunction);
 
@@ -37,7 +37,7 @@ public class AxonTests
     [Fact]
     public void GetInstance_Returns_Valid()
     {
-        IList<Synapse> terminals = new List<Synapse>();
+        IList<Synapse> terminals = [];
         Mock<IActivationFunction> activationFunctionMock = new();
 
         IAxon sut = Axon.GetInstance(terminals, activationFunctionMock.Object);

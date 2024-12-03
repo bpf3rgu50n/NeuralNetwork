@@ -6,7 +6,7 @@ public class AxonGene : IEquatable<AxonGene>
 
     public IList<double> Weights { get; set; }
 
-    public AxonGene() : this(null, new List<double>())
+    public AxonGene() : this(null, [])
     {
     }
 
