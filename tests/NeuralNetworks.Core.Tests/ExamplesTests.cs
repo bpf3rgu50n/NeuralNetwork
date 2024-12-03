@@ -40,7 +40,7 @@ public class ExamplesTests
         INeuralNetwork network1 = factory.Create(numInputs, numOutputs, numHiddenLayers, numNeuronsInHiddenLayer);
         INeuralNetwork network2 = factory.Create(numInputs, numOutputs, numHiddenLayers, numNeuronsInHiddenLayer);
 
-        double[] inputs = new double[] { 1.4d, 2.04045d, 4.2049558d };
+        double[] inputs = [1.4d, 2.04045d, 4.2049558d];
 
         network1.SetInputs(inputs);
         network1.Process();
@@ -83,7 +83,7 @@ public class ExamplesTests
         int numNeuronsInHiddenLayer = 5;
         INeuralNetwork network = factory.Create(numInputs, numOutputs, numHiddenLayers, numNeuronsInHiddenLayer);
 
-        double[] inputs = new double[] { 1.4d, 2.04045d, 4.2049558d };
+        double[] inputs = [1.4d, 2.04045d, 4.2049558d];
 
         network.SetInputs(inputs);
         network.Process();
@@ -109,7 +109,7 @@ public class ExamplesTests
 
         INeuralNetwork network = factory.Create(numInputs, numOutputs, numHiddenLayers, numNeuronsInHiddenLayer);
 
-        double[] inputs = new double[] { 1.4d, 2.04045d, 4.2049558d };
+        double[] inputs = [1.4d, 2.04045d, 4.2049558d];
 
         network.SetInputs(inputs);
         network.Process();
